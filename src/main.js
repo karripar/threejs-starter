@@ -22,3 +22,6 @@ const animate = () => {
   cube.rotation.y += 0.01;
 }
 renderer.setAnimationLoop( animate );
+
+const axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
