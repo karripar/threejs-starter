@@ -36,27 +36,6 @@ const init = () => {
   directionalLight.position.set(5, 10, 7.5);
   scene.add(directionalLight);
 
-new HDRLoader().setPath('/').load('pathway_morning_2k.hdr', function (texture) {
-  texture.mapping = THREE.EquirectangularReflectionMapping;
-
-  scene.background = texture;
-  scene.environment = texture;
-
-  // model
-
-  const loader = new GLTFLoader().setPath('/');
-  loader.load('beetle.gltf', async function (gltf) {
-    const model = gltf.scene;
-
-    // wait until the model can be added to the scene without blocking due to shader compilation
-
-    await renderer.compileAsync(model, camera, scene);
-
-    scene.add(model);
-  });
-});
-
-init();
   /* Snowman parts */
   const snowmanBody = new THREE.SphereGeometry(1, 32, 32);
   const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
@@ -119,6 +98,26 @@ init();
 
   renderer.setAnimationLoop(animate);
 };
+
+new HDRLoader().setPath('/').load('pathway_morning_2k.hdr', function (texture) {
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+
+  scene.background = texture;
+  scene.environment = texture;
+
+  // model
+
+  const loader = new GLTFLoader().setPath('/');
+  loader.load('beetle.gltf', async function (gltf) {
+    const model = gltf.scene;
+
+    // wait until the model can be added to the scene without blocking due to shader compilation
+
+    await renderer.compileAsync(model, camera, scene);
+
+    scene.add(model);
+  });
+});
 
 const animate = () => {
   controls.update();
