@@ -1,6 +1,8 @@
 import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import {HDRLoader} from 'three/examples/jsm/Addons.js';
 
 let scene, camera, renderer, cube, controls;
 
@@ -20,14 +22,41 @@ const init = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshPhongMaterial({color: 0x00ff00});
+  cube = new THREE.Mesh(geometry, material);
+  //scene.add(cube);
+
+  const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
   // Lighting
-  const ambientLight = new THREE.AmbientLight(0x404040, 1);
+
   scene.add(ambientLight);
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
   directionalLight.position.set(5, 10, 7.5);
   scene.add(directionalLight);
 
+new HDRLoader().setPath('/').load('pathway_morning_2k.hdr', function (texture) {
+  texture.mapping = THREE.EquirectangularReflectionMapping;
+
+  scene.background = texture;
+  scene.environment = texture;
+
+  // model
+
+  const loader = new GLTFLoader().setPath('/');
+  loader.load('beetle.gltf', async function (gltf) {
+    const model = gltf.scene;
+
+    // wait until the model can be added to the scene without blocking due to shader compilation
+
+    await renderer.compileAsync(model, camera, scene);
+
+    scene.add(model);
+  });
+});
+
+init();
   /* Snowman parts */
   const snowmanBody = new THREE.SphereGeometry(1, 32, 32);
   const bodyMaterial = new THREE.MeshStandardMaterial({color: 0xffffff});
