@@ -48,13 +48,13 @@ const init = () => {
   controls.maxPolarAngle = Math.PI / 2;
 
   // HDR environment map
-  new HDRLoader().setPath('/').load('pathway_morning_2k.hdr', (texture) => {
+  new HDRLoader().setPath('./').load('20251028_Karri_Elli.hdr', (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
 
     // Load GLTF model
-    const loader = new GLTFLoader().setPath('/');
+    const loader = new GLTFLoader().setPath('./');
     loader.load('world.glb', async (gltf) => {
       const model = gltf.scene;
       await renderer.compileAsync(model, camera, scene);
