@@ -1,8 +1,11 @@
+import { build } from "vite";
+
 export default {
   // here you can change all root/build destinations. NOTE the base needed!
   root: '',
   build: {
-    outDir: '../dist',
+    outDir: './dist',
+    chunkSizeWarningLimit: 1600,
   },
   base: './',
 };

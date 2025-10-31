@@ -16,7 +16,7 @@ const init = () => {
   camera.position.z = 5;
 
   // Renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
@@ -30,7 +30,7 @@ const init = () => {
 
   /* Snowman parts */
   const snowmanBody = new THREE.SphereGeometry(1, 32, 32);
-  const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const bodyMaterial = new THREE.MeshStandardMaterial({color: 0xffffff});
   const body = new THREE.Mesh(snowmanBody, bodyMaterial);
   body.scale.set(1, 1.2, 1);
   body.position.set(0, -0.5, 0);
@@ -42,7 +42,7 @@ const init = () => {
   scene.add(head);
 
   const eyeGeometry = new THREE.SphereGeometry(0.05, 16, 16);
-  const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
+  const eyeMaterial = new THREE.MeshStandardMaterial({color: 0x000000});
   const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
   leftEye.position.set(-0.15, 1.25, 0.55);
   scene.add(leftEye);
@@ -52,7 +52,7 @@ const init = () => {
   scene.add(rightEye);
 
   const noseGeometry = new THREE.ConeGeometry(0.1, 0.75, 16); // radius - height - segments
-  const noseMaterial = new THREE.MeshStandardMaterial({ color: 0xffa500 });
+  const noseMaterial = new THREE.MeshStandardMaterial({color: 0xffa500});
   const nose = new THREE.Mesh(noseGeometry, noseMaterial);
   nose.position.set(0, 1.1, 0.6);
   nose.rotation.x = Math.PI / 2;
@@ -60,7 +60,7 @@ const init = () => {
 
   // komeat kulmakarvat lumiukolle
   const eyebrowsGeometry = new THREE.CylinderGeometry(0.02, 0.02, 0.2, 16);
-  const eyebrowsMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
+  const eyebrowsMaterial = new THREE.MeshStandardMaterial({color: 0x000000});
   const leftEyebrow = new THREE.Mesh(eyebrowsGeometry, eyebrowsMaterial);
   leftEyebrow.position.set(-0.15, 1.4, 0.5);
   leftEyebrow.rotation.z = Math.PI / 8;
@@ -70,7 +70,6 @@ const init = () => {
   rightEyebrow.position.set(0.15, 1.4, 0.5);
   rightEyebrow.rotation.z = -Math.PI / 8;
   scene.add(rightEyebrow);
-
 
   // Axes
   const axesHelper = new THREE.AxesHelper(5);
@@ -84,7 +83,6 @@ const init = () => {
   controls.minDistance = 2;
   controls.maxDistance = 10;
   controls.maxPolarAngle = Math.PI / 2;
-
 
   window.addEventListener('resize', onWindowResize);
 
