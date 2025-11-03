@@ -1,12 +1,19 @@
-
 import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { HDRLoader } from 'three/examples/jsm/Addons.js';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import {HDRLoader} from 'three/examples/jsm/Addons.js';
+import {VRButton} from 'three/examples/jsm/webxr/VRButton.js';
+import {XRControllerModelFactory} from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 let scene, camera, renderer, controls;
+
+let controller1, controller2;
+let controllerGrip1, controllerGrip2;
+let raycaster;
+const intersected = [];
+const tempMatrix = new THREE.Matrix4();
+let group;
 
 const init = () => {
   scene = new THREE.Scene();
@@ -19,7 +26,7 @@ const init = () => {
   );
   camera.position.z = 5;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = THREE.sRGBEncoding;
   document.body.appendChild(renderer.domElement);
@@ -42,13 +49,13 @@ const init = () => {
   controls.maxPolarAngle = Math.PI / 2;
 
   // HDR environment map
-  new HDRLoader().setPath('/').load('pathway_morning_2k.hdr', (texture) => {
+  new HDRLoader().setPath('./').load('ricoh.hdr', (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
 
     // Load GLTF model
-    const loader = new GLTFLoader().setPath('/');
+    const loader = new GLTFLoader().setPath('./');
     loader.load('world.glb', async (gltf) => {
       const model = gltf.scene;
       await renderer.compileAsync(model, camera, scene);
@@ -77,6 +84,24 @@ const initVR = () => {
   renderer.xr.enabled = true;
 };
 
+const onSelectStart = (event) => {}
+
+const onSelectEnd = (event) => {}
+
+const loader = new GLTFLoader().setPath(basePath);
+loader.load('./gundy/scene.gltf', async function (gltf) {
+gltf.scene.scale.set(0.0003, 0.0003, 0.0003);
+let mymodel = gltf.scene;
+mymodel.rotation.y = THREE.MathUtils.degToRad(180);
+mymodel.rotation.x = THREE.MathUtils.degToRad(-36.5);
+mymodel.position.set(0, 0.01, 0);
+controllerGrip2.add(mymodel);
+ });
+
+
+const getInterSections = () => {
+  return raycaster.intersectObjects(group.children, true);
+}
 // Initialize in correct order
 init();
 initVR();
