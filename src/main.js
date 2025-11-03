@@ -1,17 +1,16 @@
-import {HDRLoader} from 'three/examples/jsm/Addons.js';
+
 import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js'; // HDRLoader → RGBELoader
+import { HDRLoader } from 'three/examples/jsm/Addons.js';
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 
 let scene, camera, renderer, controls;
 
 const init = () => {
-  // Scene
   scene = new THREE.Scene();
 
-  // Camera
   camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -20,13 +19,11 @@ const init = () => {
   );
   camera.position.z = 5;
 
-  // Renderer
-  renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = THREE.sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
-  // Lights
   const ambientLight = new THREE.AmbientLight(0x404040);
   scene.add(ambientLight);
 
@@ -34,15 +31,12 @@ const init = () => {
   directionalLight.position.set(5, 10, 7.5);
   scene.add(directionalLight);
 
-  // Axes helper
   const axesHelper = new THREE.AxesHelper(5);
   scene.add(axesHelper);
 
-  // Orbit controls
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
-  controls.screenSpacePanning = false;
   controls.minDistance = 2;
   controls.maxDistance = 10;
   controls.maxPolarAngle = Math.PI / 2;
@@ -62,10 +56,8 @@ const init = () => {
     });
   });
 
-  // Event listeners
   window.addEventListener('resize', onWindowResize);
 
-  // Start rendering loop
   renderer.setAnimationLoop(animate);
 };
 
@@ -80,5 +72,11 @@ const onWindowResize = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 };
 
-// Initialize
+const initVR = () => {
+  document.body.appendChild(VRButton.createButton(renderer));
+  renderer.xr.enabled = true;
+};
+
+// Initialize in correct order
 init();
+initVR();
