@@ -16,7 +16,7 @@ let raycaster;
 
 const intersected = [];
 const tempMatrix = new THREE.Matrix4();
-const excludedNames = ['Landscape', 'Plane'];
+const excludedNames = ['Landscape', 'Plane', 'Grid'];
 
 let group;
 
