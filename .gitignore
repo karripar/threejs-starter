@@ -23,6 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+!public/spring-field.hdr
+
 public/*.hdr
 public/*.glbf
 public/ricoh.hdr
